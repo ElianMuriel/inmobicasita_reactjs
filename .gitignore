@@ -28,3 +28,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# SSH Keys (NUNCA subir al repositorio)
+gh_actions_react
+gh_actions_react.pub
+*.pem
+*.key
+id_rsa*
+id_ed25519*

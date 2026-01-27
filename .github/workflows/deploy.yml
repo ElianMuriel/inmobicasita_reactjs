@@ -57,10 +57,12 @@ jobs:
               cp -r /tmp/react_build/* /var/www/react-app/
             fi
             
-            chown -R www-data:www-data /var/www/react-app
+            # Ajustar permisos (si usas elianadmin, cambia www-data por elianadmin)
+            chown -R elianadmin:elianadmin /var/www/react-app
             chmod -R 755 /var/www/react-app
             
-            nginx -t
-            systemctl reload nginx
+            # Verificar y recargar Nginx (requiere sudo)
+            sudo nginx -t
+            sudo systemctl reload nginx
             
             echo "✅ Despliegue completado exitosamente"
