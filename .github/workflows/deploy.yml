@@ -47,22 +47,40 @@ jobs:
           script: |
             set -e
             
+            echo "🔍 Verificando archivos recibidos..."
+            ls -la /tmp/react_build/ || echo "⚠️ /tmp/react_build no existe"
+            find /tmp/react_build -type f -name "*.html" -o -name "*.js" -o -name "*.css" | head -10 || echo "⚠️ No se encontraron archivos"
+            
+            echo "📁 Creando directorio de destino..."
             mkdir -p /var/www/react-app
             rm -rf /var/www/react-app/*
             
+            echo "📦 Copiando archivos..."
             # Copiar archivos (scp-action mantiene la estructura dist/)
             if [ -d "/tmp/react_build/dist" ]; then
+              echo "✅ Encontrado /tmp/react_build/dist"
               cp -r /tmp/react_build/dist/* /var/www/react-app/
-            else
+            elif [ -f "/tmp/react_build/index.html" ]; then
+              echo "✅ Encontrado /tmp/react_build/index.html"
               cp -r /tmp/react_build/* /var/www/react-app/
+            else
+              echo "❌ No se encontraron archivos en /tmp/react_build"
+              ls -la /tmp/react_build/
+              exit 1
             fi
             
-            # Ajustar permisos (si usas elianadmin, cambia www-data por elianadmin)
+            echo "🔐 Ajustando permisos..."
             chown -R elianadmin:elianadmin /var/www/react-app
             chmod -R 755 /var/www/react-app
             
-            # Verificar y recargar Nginx (requiere sudo)
-            sudo nginx -t
+            echo "✅ Verificando archivos desplegados..."
+            ls -la /var/www/react-app/ | head -10
+            [ -f "/var/www/react-app/index.html" ] || { echo "❌ index.html no encontrado"; exit 1; }
+            
+            echo "🔧 Verificando configuración de Nginx..."
+            sudo nginx -t || { echo "❌ Error en configuración de Nginx"; exit 1; }
+            
+            echo "🔄 Recargando Nginx..."
             sudo systemctl reload nginx
             
             echo "✅ Despliegue completado exitosamente"
