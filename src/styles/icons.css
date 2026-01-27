@@ -1,0 +1,305 @@
+/* Iconos Minimalistas CSS */
+
+.icon,
+.icon-simple-home,
+.icon-simple-location,
+.icon-simple-bed,
+.icon-simple-bath,
+.icon-simple-area,
+.icon-simple-edit,
+.icon-simple-delete,
+.icon-simple-security,
+.icon-simple-people,
+.icon-simple-money {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 1;
+}
+
+/* Icono Casa */
+.icon-home::before {
+  content: '';
+  display: block;
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-bottom: none;
+  border-radius: 2px 2px 0 0;
+  position: relative;
+}
+
+.icon-home::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 0.5em solid transparent;
+  border-right: 0.5em solid transparent;
+  border-bottom: 0.4em solid currentColor;
+  position: absolute;
+  top: -0.4em;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Icono Ubicación */
+.icon-location::before {
+  content: '●';
+  display: block;
+  font-size: 0.6em;
+  line-height: 0.6em;
+  position: relative;
+  top: 0.2em;
+}
+
+.icon-location::after {
+  content: '';
+  display: block;
+  width: 0.8em;
+  height: 0.8em;
+  border: 2px solid currentColor;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  position: absolute;
+  top: 0.1em;
+  left: 0.1em;
+}
+
+/* Icono Cama */
+.icon-bed::before {
+  content: '';
+  display: block;
+  width: 0.8em;
+  height: 0.5em;
+  border: 2px solid currentColor;
+  border-radius: 2px;
+  position: relative;
+}
+
+.icon-bed::after {
+  content: '';
+  display: block;
+  width: 0.3em;
+  height: 0.3em;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  position: absolute;
+  right: 0.1em;
+  top: 0.1em;
+}
+
+/* Icono Baño */
+.icon-bath::before {
+  content: '';
+  display: block;
+  width: 0.6em;
+  height: 0.8em;
+  border: 2px solid currentColor;
+  border-radius: 0 0 0.2em 0.2em;
+  position: relative;
+}
+
+.icon-bath::after {
+  content: '';
+  display: block;
+  width: 0.3em;
+  height: 0.1em;
+  border-top: 2px solid currentColor;
+  border-left: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  border-radius: 0.15em 0.15em 0 0;
+  position: absolute;
+  top: -0.15em;
+  left: 0.15em;
+}
+
+/* Icono Medidas */
+.icon-area::before {
+  content: '';
+  display: block;
+  width: 0.7em;
+  height: 0.7em;
+  border: 2px solid currentColor;
+  position: relative;
+}
+
+.icon-area::after {
+  content: '';
+  display: block;
+  width: 0.3em;
+  height: 0.3em;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  position: absolute;
+  bottom: -0.15em;
+  right: -0.15em;
+}
+
+/* Icono Seguridad */
+.icon-security::before {
+  content: '';
+  display: block;
+  width: 0.6em;
+  height: 0.6em;
+  border: 2px solid currentColor;
+  border-radius: 0.2em 0.2em 0.3em 0.3em;
+  position: relative;
+}
+
+.icon-security::after {
+  content: '';
+  display: block;
+  width: 0.3em;
+  height: 0.2em;
+  border: 2px solid currentColor;
+  border-bottom: none;
+  border-radius: 0.15em 0.15em 0 0;
+  position: absolute;
+  top: -0.3em;
+  left: 0.15em;
+}
+
+/* Icono Personas */
+.icon-people::before {
+  content: '';
+  display: block;
+  width: 0.4em;
+  height: 0.4em;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  position: relative;
+  margin: 0 auto;
+}
+
+.icon-people::after {
+  content: '';
+  display: block;
+  width: 0.5em;
+  height: 0.3em;
+  border: 2px solid currentColor;
+  border-top: none;
+  border-radius: 0 0 0.25em 0.25em;
+  position: absolute;
+  bottom: -0.2em;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Icono Dinero */
+.icon-money::before {
+  content: '$';
+  display: block;
+  font-weight: 600;
+  font-size: 0.9em;
+  line-height: 1em;
+}
+
+/* Icono Editar */
+.icon-edit {
+  width: 1.2em;
+  height: 1.2em;
+  position: relative;
+}
+
+.icon-edit::before {
+  content: '';
+  display: block;
+  width: 0.8em;
+  height: 0.8em;
+  border: 2px solid currentColor;
+  border-right: none;
+  border-bottom: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.icon-edit::after {
+  content: '';
+  display: block;
+  width: 0.3em;
+  height: 0.1em;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  position: absolute;
+  top: 0.6em;
+  left: 0.6em;
+  transform: rotate(45deg);
+}
+
+/* Icono Eliminar */
+.icon-delete {
+  width: 1.2em;
+  height: 1.2em;
+  position: relative;
+}
+
+.icon-delete::before {
+  content: '';
+  display: block;
+  width: 0.8em;
+  height: 0.8em;
+  border: 2px solid currentColor;
+  border-radius: 0.1em;
+  position: absolute;
+  top: 0.1em;
+  left: 0.1em;
+}
+
+.icon-delete::after {
+  content: '';
+  display: block;
+  width: 0.5em;
+  height: 2px;
+  background: currentColor;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* Iconos de estadísticas */
+.icon-stats {
+  width: 1.5em;
+  height: 1.5em;
+  position: relative;
+}
+
+.icon-stats::before {
+  content: '';
+  display: block;
+  width: 0.3em;
+  height: 0.6em;
+  background: currentColor;
+  position: absolute;
+  bottom: 0;
+  left: 0.1em;
+  border-radius: 0.1em 0.1em 0 0;
+}
+
+.icon-stats::after {
+  content: '';
+  display: block;
+  width: 0.3em;
+  height: 0.9em;
+  background: currentColor;
+  position: absolute;
+  bottom: 0;
+  right: 0.1em;
+  border-radius: 0.1em 0.1em 0 0;
+}
+
+/* Versión simplificada usando caracteres Unicode minimalistas y elegantes */
+.icon-simple-home::before { content: '⌂'; font-size: 1em; line-height: 1; }
+.icon-simple-location::before { content: '●'; font-size: 0.7em; line-height: 1; position: relative; top: 0.1em; }
+.icon-simple-bed::before { content: '⊔'; font-size: 1em; line-height: 1; }
+.icon-simple-bath::before { content: '◉'; font-size: 0.9em; line-height: 1; }
+.icon-simple-area::before { content: '□'; font-size: 0.9em; line-height: 1; }
+.icon-simple-edit::before { content: '✎'; font-size: 1em; line-height: 1; }
+.icon-simple-delete::before { content: '✕'; font-size: 1em; line-height: 1; }
+.icon-simple-security::before { content: '◉'; font-size: 0.9em; line-height: 1; }
+.icon-simple-people::before { content: '◯◯'; font-size: 0.8em; line-height: 1; letter-spacing: -0.1em; }
+.icon-simple-money::before { content: '$'; font-size: 1em; line-height: 1; font-weight: 600; }

@@ -1,0 +1,36 @@
+# CAMBIOS PARA: gestion/urls.py
+
+# 1. Agregar mi_cliente al import:
+# Buscar:
+# from .views import (
+#     RolViewSet, PropietarioViewSet, ClienteViewSet,
+#     TipoInmuebleViewSet, InmuebleViewSet,
+#     VisitaViewSet, ContratoViewSet, PagoViewSet, ProfileView, register
+# )
+#
+# Cambiar a:
+"""
+from .views import (
+    RolViewSet, PropietarioViewSet, ClienteViewSet,
+    TipoInmuebleViewSet, InmuebleViewSet,
+    VisitaViewSet, ContratoViewSet, PagoViewSet, ProfileView, register, mi_cliente
+)
+"""
+
+# 2. Agregar la ruta en urlpatterns:
+# Buscar:
+# urlpatterns = [
+#     path('', include(router.urls)),
+#     path('profile/', ProfileView.as_view(), name='profile'),
+#     path('auth/register/', register, name='register'),
+# ]
+#
+# Cambiar a:
+"""
+urlpatterns = [
+    path('', include(router.urls)),
+    path('profile/', ProfileView.as_view(), name='profile'),
+    path('auth/register/', register, name='register'),
+    path('auth/mi-cliente/', mi_cliente, name='mi-cliente'),
+]
+"""
