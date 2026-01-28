@@ -7,57 +7,88 @@ import {
   TextField,
   Button,
   Typography,
-  Alert,
-  CircularProgress
+  CircularProgress,
+  Collapse,
+  IconButton
 } from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home'
+import CloseIcon from '@mui/icons-material/Close'
 import { useAuth } from '../../contexts/AuthContext'
+import { ErrorAlert } from '../../components/ErrorAlert'
 
 function Login() {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   })
-  const [error, setError] = useState('')
+  const [errors, setErrors] = useState({})
+  const [apiError, setApiError] = useState('')
   const [loading, setLoading] = useState(false)
   const { login, user } = useAuth()
   const navigate = useNavigate()
 
+  const validateForm = () => {
+    const newErrors = {}
+    
+    if (!formData.username || formData.username.trim() === '') {
+      newErrors.username = 'El usuario es requerido'
+    } else if (formData.username.length < 3) {
+      newErrors.username = 'El usuario debe tener al menos 3 caracteres'
+    }
+    
+    if (!formData.password || formData.password === '') {
+      newErrors.password = 'La contraseña es requerida'
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'La contraseña debe tener al menos 6 caracteres'
+    }
+    
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
   const handleChange = (e) => {
+    const { name, value } = e.target
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     })
-    setError('')
+    // Limpiar error del campo cuando el usuario empieza a escribir
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: '',
+      })
+    }
+    setApiError('')
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setError('')
+    setApiError('')
+
+    if (!validateForm()) {
+      return
+    }
+
     setLoading(true)
 
     try {
       const result = await login(formData.username, formData.password)
       if (result.success) {
         const userData = result.user || user
-        console.log('User data after login:', userData)
-        console.log('Rol:', userData?.rol, 'is_vendedor:', userData?.is_vendedor, 'is_staff:', userData?.is_staff)
         
         if (userData?.rol === 'ADMIN' || userData?.is_staff) {
-          console.log('Redirigiendo a /admin')
           navigate('/admin')
         } else if (userData?.rol === 'VENDEDOR' || userData?.is_vendedor) {
-          console.log('Redirigiendo a /vendedor')
           navigate('/vendedor')
         } else {
-          console.log('Redirigiendo a / (cliente)')
           navigate('/')
         }
       } else {
-        setError(result.error || 'Error al iniciar sesión')
+        setApiError(result.error || 'Error al iniciar sesión. Verifica tus credenciales.')
       }
     } catch (err) {
-      setError('Error al iniciar sesión. Por favor, intenta de nuevo.')
+      setApiError('Error al conectar con el servidor. Por favor, intenta de nuevo más tarde.')
     } finally {
       setLoading(false)
     }
@@ -96,11 +127,10 @@ function Login() {
           </Box>
 
           <form onSubmit={handleSubmit}>
-            {error && (
-              <Alert severity="error" sx={{ mb: 3 }}>
-                {error}
-              </Alert>
-            )}
+            <ErrorAlert 
+              error={apiError} 
+              onClose={() => setApiError('')}
+            />
 
             <TextField
               fullWidth
@@ -112,6 +142,11 @@ function Login() {
               autoComplete="username"
               margin="normal"
               variant="outlined"
+              disabled={loading}
+              error={!!errors.username}
+              helperText={errors.username}
+              placeholder="Ingresa tu usuario"
+              autoFocus
             />
 
             <TextField
@@ -125,6 +160,10 @@ function Login() {
               autoComplete="current-password"
               margin="normal"
               variant="outlined"
+              disabled={loading}
+              error={!!errors.password}
+              helperText={errors.password}
+              placeholder="Ingresa tu contraseña"
             />
 
             <Button
@@ -143,7 +182,10 @@ function Login() {
               }}
             >
               {loading ? (
-                <CircularProgress size={24} color="inherit" />
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <CircularProgress size={20} color="inherit" />
+                  Iniciando sesión...
+                </Box>
               ) : (
                 'Iniciar Sesión'
               )}

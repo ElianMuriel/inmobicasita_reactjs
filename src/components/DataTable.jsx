@@ -7,19 +7,57 @@ import {
   TableRow,
   Paper,
   IconButton,
-  CircularProgress,
   Box,
-  Typography
+  Typography,
+  Skeleton,
+  Alert
 } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 
-function DataTable({ columns, data, onEdit, onDelete, loading }) {
+function DataTable({ columns, data, onEdit, onDelete, loading, error }) {
+  if (error) {
+    return (
+      <Alert severity="error" sx={{ mb: 2 }}>
+        {error}
+      </Alert>
+    )
+  }
+
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
-        <CircularProgress />
-      </Box>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow sx={{ bgcolor: 'primary.main' }}>
+              {columns.map((col) => (
+                <TableCell key={col.key} sx={{ color: 'white', fontWeight: 600 }}>
+                  {col.label}
+                </TableCell>
+              ))}
+              {(onEdit || onDelete) && (
+                <TableCell sx={{ color: 'white', fontWeight: 600 }}>Acciones</TableCell>
+              )}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {[...Array(5)].map((_, index) => (
+              <TableRow key={index}>
+                {columns.map((col) => (
+                  <TableCell key={col.key}>
+                    <Skeleton />
+                  </TableCell>
+                ))}
+                {(onEdit || onDelete) && (
+                  <TableCell>
+                    <Skeleton width={80} />
+                  </TableCell>
+                )}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     )
   }
 

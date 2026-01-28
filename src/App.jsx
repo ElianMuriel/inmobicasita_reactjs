@@ -88,7 +88,6 @@ function ClienteRoute({ children }) {
   return children
 }
 
-// Componente para redirigir según el rol después del login
 function RoleRedirect() {
   const { user, loading } = useAuth()
   
@@ -100,13 +99,12 @@ function RoleRedirect() {
     return <Navigate to="/login" />
   }
   
-  // Redirigir según el rol
   if (user.rol === 'ADMIN' || user.is_staff) {
     return <Navigate to="/admin" />
   } else if (user.rol === 'VENDEDOR') {
     return <Navigate to="/vendedor" />
   } else {
-    return <Navigate to="/" /> // Clientes van a la página de inicio
+    return <Navigate to="/" />
   }
 }
 
@@ -114,7 +112,6 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-        {/* Rutas públicas */}
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
@@ -122,10 +119,7 @@ function App() {
           <Route path="login" element={<Login />} />
         </Route>
 
-        {/* Redirección según rol */}
         <Route path="/dashboard" element={<RoleRedirect />} />
-
-        {/* Rutas de Administrador */}
         <Route path="/admin" element={<PrivateRoute><Layout /></PrivateRoute>}>
           <Route index element={<AdminRoute><Dashboard /></AdminRoute>} />
           <Route path="propietarios" element={<AdminRoute><Propietarios /></AdminRoute>} />
@@ -137,15 +131,11 @@ function App() {
           <Route path="pagos" element={<AdminRoute><Pagos /></AdminRoute>} />
           <Route path="roles" element={<AdminRoute><Roles /></AdminRoute>} />
         </Route>
-
-        {/* Rutas de Vendedor */}
         <Route path="/vendedor" element={<PrivateRoute><VendedorLayout /></PrivateRoute>}>
           <Route index element={<VendedorRoute><VendedorDashboard /></VendedorRoute>} />
           <Route path="inmuebles" element={<VendedorRoute><InmueblesVendedor /></VendedorRoute>} />
           <Route path="visitas" element={<VendedorRoute><VisitasVendedor /></VendedorRoute>} />
         </Route>
-
-        {/* Rutas de Cliente */}
         <Route path="/cliente" element={<PrivateRoute><ClienteLayout /></PrivateRoute>}>
           <Route index element={<ClienteRoute><div><h1>Área de Cliente</h1><p>Bienvenido, aquí puedes ver tus propiedades y contactos.</p></div></ClienteRoute>} />
           <Route path="mis-propiedades" element={<ClienteRoute><div><h1>Mis Propiedades</h1><p>Propiedades que has adquirido o reservado.</p></div></ClienteRoute>} />

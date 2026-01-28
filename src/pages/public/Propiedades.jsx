@@ -39,6 +39,20 @@ import { useNavigate } from 'react-router-dom'
 function Propiedades() {
   const { isAuthenticated, user } = useAuth()
   const navigate = useNavigate()
+  
+  const placeholderImages = [
+    'https://images.unsplash.com/photo-1523217311519-fef6f8c91b0b?w=500&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=500&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1540932239986-310128078ceb?w=500&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=500&h=300&fit=crop',
+  ]
+  
+  const getPlaceholderImage = (index) => {
+    return placeholderImages[index % placeholderImages.length]
+  }
+  
   const [inmuebles, setInmuebles] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -226,18 +240,76 @@ function Propiedades() {
   }
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
-      <Box sx={{ textAlign: 'center', mb: 4 }}>
-        <Typography variant="overline" sx={{ fontSize: '0.875rem', color: 'text.secondary', display: 'block', mb: 1 }}>
-          Propiedades cuidadosamente seleccionadas
-        </Typography>
-        <Typography variant="h3" component="h1" sx={{ fontWeight: 700, color: 'primary.main' }}>
-          OFERTAS MÁS RECIENTES PARA TI
-        </Typography>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
+      <Box
+        sx={{
+          backgroundImage: 'url("https://images.unsplash.com/photo-1523217311519-fef6f8c91b0b?w=1400&h=500&fit=crop")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: { xs: 'scroll', md: 'fixed' },
+          color: 'white',
+          py: 8,
+          position: 'relative',
+          minHeight: '500px',
+          display: 'flex',
+          alignItems: 'center',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(26, 58, 58, 0.65)',
+            zIndex: 1
+          }
+        }}
+      >
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
+          <Box sx={{ textAlign: 'center' }}>
+            <Typography 
+              variant="overline" 
+              sx={{ 
+                fontSize: '0.875rem', 
+                color: 'secondary.main', 
+                display: 'block', 
+                mb: 1,
+                fontWeight: 600
+              }}
+            >
+              Propiedades cuidadosamente seleccionadas
+            </Typography>
+            <Typography 
+              variant="h2" 
+              component="h1" 
+              sx={{ 
+                fontWeight: 700, 
+                mb: 2,
+                fontSize: { xs: '2rem', md: '3rem' },
+                textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+              }}
+            >
+              Nuestras Mejores Ofertas
+            </Typography>
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                opacity: 0.95,
+                maxWidth: '600px',
+                mx: 'auto',
+                textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
+                fontWeight: 300
+              }}
+            >
+              Encuentra la propiedad ideal para ti entre nuestras opciones más destacadas
+            </Typography>
+          </Box>
+        </Container>
       </Box>
 
-      {/* Filtros */}
-      <Paper sx={{ p: 3, mb: 4 }}>
+      {/* Main Content */}
+      <Container maxWidth="xl" sx={{ py: 4 }}>
+        <Paper sx={{ p: 3, mb: 4 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4}>
             <TextField
@@ -286,8 +358,7 @@ function Propiedades() {
         </Grid>
       </Paper>
 
-      {/* Contenido */}
-      {loading ? (
+        {loading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
           <CircularProgress />
         </Box>
@@ -316,23 +387,39 @@ function Propiedades() {
                   >
                     <CardMedia
                       sx={{
-                        height: 200,
-                        bgcolor: 'grey.100',
+                        height: 240,
+                        bgcolor: 'grey.200',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        position: 'relative'
+                        position: 'relative',
+                        overflow: 'hidden',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backgroundImage: inmueble.imagen 
+                          ? `url(${inmueble.imagen})`
+                          : `url(${getPlaceholderImage(inmueble.id)})`,
+                        cursor: 'pointer',
+                        transition: 'transform 0.3s ease',
+                        '&:hover': {
+                          transform: 'scale(1.05)'
+                        }
                       }}
+                      onClick={() => handleViewProperty(inmueble)}
                     >
-                      <HomeIcon sx={{ fontSize: 80, color: 'grey.400' }} />
+                      {!inmueble.imagen && !getPlaceholderImage(inmueble.id) && 
+                        <HomeIcon sx={{ fontSize: 80, color: 'grey.400' }} />
+                      }
                       <Chip
                         label={estadoChip.label}
                         color={estadoChip.color}
                         size="small"
                         sx={{
                           position: 'absolute',
-                          top: 8,
-                          right: 8
+                          top: 12,
+                          right: 12,
+                          fontWeight: 600,
+                          fontSize: '0.75rem'
                         }}
                       />
                     </CardMedia>
@@ -436,7 +523,6 @@ function Propiedades() {
         </>
       )}
 
-      {/* Dialog para ver detalles, contactar o comprar */}
       <Dialog
         open={modalOpen}
         onClose={handleCloseModal}
@@ -552,7 +638,8 @@ function Propiedades() {
           )}
         </DialogContent>
       </Dialog>
-    </Container>
+      </Container>
+    </Box>
   )
 }
 

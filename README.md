@@ -54,19 +54,39 @@ npm run build
 npm run preview
 ```
 
+## 🧪 Credenciales de Prueba
+
+Para probar el sistema localmente o en producción, usa estas credenciales:
+
+### Admin
+- **Email**: admin@example.com
+- **Contraseña**: admin123
+
+### Vendedor
+- **Email**: vendedor@example.com
+- **Contraseña**: vendedor123
+
+### Cliente
+- **Email**: cliente@example.com
+- **Contraseña**: cliente123
+
+> **Nota**: Las credenciales pueden variar según tu backend. Consulta la configuración de tu API Django.
+
 ## ⚙️ Variables de Entorno
 
-Crea un archivo `.env.production` o configura en GitHub Secrets:
+Crea un archivo `.env.local` para desarrollo:
 
 ```env
-VITE_API_URL=http://20.171.254.45/api
+VITE_API_URL=http://localhost:8000/api
 ```
 
-O si tu API tiene HTTPS:
+Para producción, crea `.env.production`:
 
 ```env
-VITE_API_URL=https://api.tu-dominio.com/api
+VITE_API_URL=https://tu-api-produccion.com/api
 ```
+
+O configura en GitHub Secrets para despliegue automático.
 
 ## 🌐 Despliegue
 
@@ -105,8 +125,16 @@ src/
 
 ## 📝 Documentación
 
-- [`DESPLIEGUE_VPS.md`](./DESPLIEGUE_VPS.md) - Guía completa de despliegue
+### Entrega Académica
+- [`CUMPLIMIENTO_REQUISITOS.md`](./CUMPLIMIENTO_REQUISITOS.md) - Verificación de requisitos de entrega
+- [`EVIDENCIA_FUNCIONAL.md`](./EVIDENCIA_FUNCIONAL.md) - Guía para grabar video y capturar pantallas
+- [`DESPLIEGUE_CICD.md`](./DESPLIEGUE_CICD.md) - Configuración de CI/CD con GitHub Actions
+
+### Despliegue
+- [`DESPLIEGUE_VPS.md`](./DESPLIEGUE_VPS.md) - Guía completa de despliegue en VPS
 - [`COMANDOS_RAPIDOS_VPS.md`](./COMANDOS_RAPIDOS_VPS.md) - Comandos rápidos
+
+### Configuración
 - [`CREAR_REPOSITORIO_GITHUB.md`](./CREAR_REPOSITORIO_GITHUB.md) - Configurar repositorio
 
 ## 👨‍💻 Desarrollo

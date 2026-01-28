@@ -7,8 +7,8 @@ import {
   Card,
   CardContent,
   Paper,
-  CircularProgress,
-  Avatar
+  Skeleton,
+  Alert
 } from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home'
 import PeopleIcon from '@mui/icons-material/People'
@@ -32,6 +32,7 @@ function Dashboard() {
     contratos: 0,
   })
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     loadStats()
@@ -39,6 +40,7 @@ function Dashboard() {
 
   const loadStats = async () => {
     try {
+      setError(null)
       const [inmuebles, clientes, propietarios, visitas, contratos] =
         await Promise.all([
           inmueblesService.getAll(),
@@ -57,6 +59,7 @@ function Dashboard() {
       })
     } catch (error) {
       console.error('Error loading stats:', error)
+      setError('No se pudieron cargar las estadísticas. Por favor intenta de nuevo.')
     } finally {
       setLoading(false)
     }
@@ -100,12 +103,65 @@ function Dashboard() {
     }
   ]
 
-  if (loading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
-        <CircularProgress />
-      </Box>
-    )
+  // Renderizar skeletons mientras carga
+  const renderStatCards = () => {
+    if (loading) {
+      return [...Array(5)].map((_, index) => (
+        <Grid item xs={12} sm={6} md={4} lg={2.4} key={index}>
+          <Card>
+            <CardContent>
+              <Skeleton variant="circular" width={56} height={56} sx={{ mb: 2 }} />
+              <Skeleton variant="text" width="80%" sx={{ mb: 1 }} />
+              <Skeleton variant="text" height={40} width="60%" />
+            </CardContent>
+          </Card>
+        </Grid>
+      ))
+    }
+
+    return statCards.map((stat, index) => (
+      <Grid item xs={12} sm={6} md={4} lg={2.4} key={index}>
+        <Card
+          sx={{
+            height: '100%',
+            transition: 'transform 0.3s, box-shadow 0.3s',
+            '&:hover': {
+              transform: 'translateY(-8px)',
+              boxShadow: 6
+            }
+          }}
+        >
+          <CardContent>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              <Box
+                sx={{
+                  bgcolor: stat.bgColor,
+                  color: stat.color,
+                  width: 56,
+                  height: 56,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  mr: 2,
+                  flexShrink: 0
+                }}
+              >
+                {stat.icon}
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                  {stat.title}
+                </Typography>
+                <Typography variant="h4" sx={{ fontWeight: 700, color: 'primary.main' }}>
+                  {stat.value}
+                </Typography>
+              </Box>
+            </Box>
+          </CardContent>
+        </Card>
+      </Grid>
+    ))
   }
 
   return (
@@ -119,45 +175,14 @@ function Dashboard() {
         </Typography>
       </Box>
 
+      {error && (
+        <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError(null)}>
+          {error}
+        </Alert>
+      )}
+
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        {statCards.map((stat, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={2.4} key={index}>
-            <Card
-              sx={{
-                height: '100%',
-                transition: 'transform 0.3s, box-shadow 0.3s',
-                '&:hover': {
-                  transform: 'translateY(-8px)',
-                  boxShadow: 6
-                }
-              }}
-            >
-              <CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <Avatar
-                    sx={{
-                      bgcolor: stat.bgColor,
-                      color: stat.color,
-                      width: 56,
-                      height: 56,
-                      mr: 2
-                    }}
-                  >
-                    {stat.icon}
-                  </Avatar>
-                  <Box sx={{ flex: 1 }}>
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
-                      {stat.title}
-                    </Typography>
-                    <Typography variant="h4" sx={{ fontWeight: 700, color: 'primary.main' }}>
-                      {stat.value}
-                    </Typography>
-                  </Box>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
+        {renderStatCards()}
       </Grid>
 
       <Paper sx={{ p: 4 }}>
