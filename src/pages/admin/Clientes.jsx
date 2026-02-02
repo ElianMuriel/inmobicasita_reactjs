@@ -95,9 +95,14 @@ function Clientes() {
     e.preventDefault()
     setFormError('')
 
+    // Agregar el flag crear_usuario cuando es un nuevo cliente
+    const dataToSend = editingItem
+      ? formData
+      : { ...formData, crear_usuario: true }
+
     const result = editingItem
-      ? await update(editingItem.id, formData)
-      : await create(formData)
+      ? await update(editingItem.id, dataToSend)
+      : await create(dataToSend)
 
     if (result.success) {
       handleCloseModal()
@@ -197,6 +202,12 @@ function Clientes() {
             {formError && (
               <Alert severity="error" sx={{ mb: 2 }}>
                 {formError}
+              </Alert>
+            )}
+
+            {!editingItem && (
+              <Alert severity="info" sx={{ mb: 2 }}>
+                ℹ️ Se creará automáticamente un usuario con nombre de usuario "<strong>{formData.nombres.replace(/\s+/g, '_').toLowerCase() || 'nombre'}</strong>" y contraseña "<strong>{formData.identificacion || 'cedula'}</strong>"
               </Alert>
             )}
 
