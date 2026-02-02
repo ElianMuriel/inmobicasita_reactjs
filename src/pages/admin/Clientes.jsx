@@ -207,7 +207,7 @@ function Clientes() {
 
             {!editingItem && (
               <Alert severity="info" sx={{ mb: 2 }}>
-                ℹ️ Se creará automáticamente un usuario con nombre de usuario "<strong>{formData.nombres.replace(/\s+/g, '_').toLowerCase() || 'nombre'}</strong>" y contraseña "<strong>{formData.identificacion || 'cedula'}</strong>"
+                ℹ️ Se creará automáticamente un usuario con correo "<strong>{formData.email || 'correo'}</strong>" y contraseña "<strong>{formData.identificacion || 'cédula'}</strong>"
               </Alert>
             )}
 
