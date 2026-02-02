@@ -124,7 +124,7 @@ function ClienteLayout() {
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Typography variant="body2" sx={{ display: { xs: 'none', sm: 'block' } }}>
-              {user?.username}
+              Hola, {user?.first_name || user?.username}
             </Typography>
             <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
               <Avatar sx={{ bgcolor: 'secondary.main', width: 40, height: 40 }}>
